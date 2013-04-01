@@ -33,7 +33,7 @@ for ingest_file in file_list:
 	if ingest_file.endswith('.xml'):
 
 		try:
-			os.system(Template('curl -i -u fedoraAdmin:fedoraAdmin -X POST http://141.217.172.45/fedora/objects/new -H "Content-Type: text/xml" --data-binary "@$ingest_file"').substitute(ingest_file=ingest_file))
+			os.system(Template('curl -i -u fedoraAdmin:cowp00p2012 -X POST http://141.217.172.152:8080/fedora/objects/new -H "Content-Type: text/xml" --data-binary "@$ingest_file"').substitute(ingest_file=ingest_file))
 			print "Ojbect "+ingest_file+" successfully ingested."
 			time.sleep(1)
 

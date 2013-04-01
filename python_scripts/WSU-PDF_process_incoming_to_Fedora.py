@@ -320,7 +320,7 @@ def createSingleHTML(item_ID):
 # index item_ID's in Solr
 def indexItemsinSolr(item_ID):
 	#run index item script
-	os.system(Template("bash /var/opt/solr_utilities/index_item_153.sh $item_ID").substitute(item_ID=item_ID))
+	os.system(Template("bash /var/opt/solr_utilities/sindex_item_152.sh $item_ID").substitute(item_ID=item_ID))
 	print "item indexed."
 
 # move files from /processing to /var/www/data
@@ -346,7 +346,7 @@ def processItems(item_ID_list):
 			# raw_input("item_ID SinglePDF complete, click enter to continue...")
 			createSingleHTML(item_ID)
 			# raw_input("item_ID SingleHTML complete, click enter to continue...")
-			indexItemsinSolr(item_ID)
+			# indexItemsinSolr(item_ID)
 			# # raw_input("item_ID INDEXING complete, click enter to continue...")
 			print item_ID,"complete!"
 		except:
@@ -355,7 +355,6 @@ def processItems(item_ID_list):
 			os.system(Template("mv /processing/$item_ID/ /exceptions").substitute(item_ID=item_ID))
 
 def postProcessIngest():
-	
 	# After MIM ingest, it would make sense to change the structure above.
 	# Currently it concatenates "/processing" with the ItemID, this works, but is not as forgiving as using this "listdir_fullpath" function
 	# As it stands, FOXML manifest creation and ingest will occur AFTER all the books have been ordered, structured, and indexed in Solr.
@@ -371,7 +370,7 @@ def postProcessIngest():
 	print "Creating pre-FOXML manifests for the following items:",manifest_list
 	for item_path in manifest_list:
 		try:
-			os.system(Template("python /var/opt/fedora_utilities/python_scripts/WSU-PDF_ebook_manifest_create_153.py $item_path WSUpress").substitute(item_path=item_path))
+			os.system(Template("python /var/opt/fedora_utilities/python_scripts/WSU-PDF_ebook_manifest_create_152.py $item_path WSUpress").substitute(item_path=item_path))
 		except:
 			#this should include a logging event
 			print item_path,"had errors and did NOT process."
@@ -398,7 +397,7 @@ def postProcessIngest():
 	ingestList = listdir_fullpath('/var/www/data')
 	for itemPath in ingestList:
 		try:
-			os.system(Template("python /var/opt/fedora_utilities/python_scripts/WSU-PDF_bulk_ingest_153.py $itemPath").substitute(itemPath=itemPath))
+			os.system(Template("python /var/opt/fedora_utilities/python_scripts/WSU-PDF_bulk_ingest_152.py $itemPath").substitute(itemPath=itemPath))
 		except:
 			#this should include a logging event
 			print item_path,"had errors and did NOT process."
@@ -410,6 +409,7 @@ def postProcessIngest():
 	## ---------------------- ##
 	# Define an error / exception function
 	# alert errors, moves to exceptions folder, and logs what the error was to a central log somewhere
+
 
 def moveToProcessed():
 	#lastly, move processed items to processed folder
@@ -443,11 +443,6 @@ if processType == "ingest":
 	print "All items ingested, great success!"
 else:
 	print "please entere 'process', 'ingest', or 'full' as the first argument"
-
-
-
-
-
 
 
 
